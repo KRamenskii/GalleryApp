@@ -9,4 +9,6 @@ import UIKit
 
 class RowTypeCollectionViewCell: UICollectionViewCell {
     
+    static let identifier = "RowTypeCollectionViewCell"
+    
 }
