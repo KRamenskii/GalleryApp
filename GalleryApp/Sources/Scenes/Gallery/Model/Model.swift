@@ -30,13 +30,45 @@ struct Model {
         
         // MARK: - Shared albums section
         
+        models.append(Section(header: Header.headerAndButton(model:
+                       HeaderAndButton(title: SectionTitle.sharedAlbums, titleButton: SectionTitle.buttonTitle)), cell: [
+                        
+            .imageCell(model: CardTypeCell(header: SharedAlbumsCellTitle.dog, icon: SharedAlbumsCellIconImage.dog, countTitle: SharedAlbumsCellSubTitle.dog)),
+            .imageCell(model: CardTypeCell(header: SharedAlbumsCellTitle.people, icon: SharedAlbumsCellIconImage.people, countTitle: SharedAlbumsCellSubTitle.people)),
+            .imageCell(model: CardTypeCell(header: SharedAlbumsCellTitle.pig, icon: SharedAlbumsCellIconImage.pig, countTitle: SharedAlbumsCellSubTitle.pig)),
+            .imageCell(model: CardTypeCell(header: SharedAlbumsCellTitle.vacationHome, icon: SharedAlbumsCellIconImage.vacationHome, countTitle: SharedAlbumsCellSubTitle.vacationHome))
+        ]))
         
         // MARK: - People and places section
         
+        models.append(Section(header: Header.header(model: HeaderTitle(title: SectionTitle.peopleAndPlaces)), cell: [
+            
+            .imageCell(model: CardTypeCell(header: PeopleAndPlacesCellTitle.people, icon: PeopleAndPlacesCellIconImage.people, countTitle: PeopleAndPlacesCellSubTitle.people)),
+            .imageCell(model: CardTypeCell(header: PeopleAndPlacesCellTitle.places, icon: PeopleAndPlacesCellIconImage.places, countTitle: PeopleAndPlacesCellSubTitle.places))
+        ]))
         
         // MARK: - Type of media section
         
+        models.append(Section(header: Header.header(model: HeaderTitle(title: SectionTitle.typesOfMedia)), cell: [
+            
+            .rowCell(model: RowTypeCell(header: TypesOfMediaCellTitle.video, icon: TypesOfMediaCellIconImage.video, subTitle: TypesOfMediaCellSubTitle.video)),
+            .rowCell(model: RowTypeCell(header: TypesOfMediaCellTitle.selfie, icon: TypesOfMediaCellIconImage.selfie, subTitle: TypesOfMediaCellSubTitle.selfie)),
+            .rowCell(model: RowTypeCell(header: TypesOfMediaCellTitle.photoLivePhotos, icon: TypesOfMediaCellIconImage.photoLivePhotos, subTitle: TypesOfMediaCellSubTitle.photoLivePhotos)),
+            .rowCell(model: RowTypeCell(header: TypesOfMediaCellTitle.portraits, icon: TypesOfMediaCellIconImage.portraits, subTitle: TypesOfMediaCellSubTitle.portraits)),
+            .rowCell(model: RowTypeCell(header: TypesOfMediaCellTitle.panoramas, icon: TypesOfMediaCellIconImage.panoramas, subTitle: TypesOfMediaCellSubTitle.panoramas)),
+            .rowCell(model: RowTypeCell(header: TypesOfMediaCellTitle.timelapse, icon: TypesOfMediaCellIconImage.timelapse, subTitle: TypesOfMediaCellSubTitle.timelapse)),
+            .rowCell(model: RowTypeCell(header: TypesOfMediaCellTitle.slowly, icon: TypesOfMediaCellIconImage.slowly, subTitle: TypesOfMediaCellSubTitle.slowly)),
+            .rowCell(model: RowTypeCell(header: TypesOfMediaCellTitle.screenshots, icon: TypesOfMediaCellIconImage.screenshots, subTitle: TypesOfMediaCellSubTitle.screenshots)),
+            .rowCell(model: RowTypeCell(header: TypesOfMediaCellTitle.animated, icon: TypesOfMediaCellIconImage.animated, subTitle: TypesOfMediaCellSubTitle.animated))
+        ]))
         
-        // MARK: - Other section 
+        // MARK: - Other section
+        
+        models.append(Section(header: Header.header(model: HeaderTitle(title: SectionTitle.other)), cell: [
+            
+            .rowCell(model: RowTypeCell(header: OtherCellTitle.imported, icon: OtherCellIconImage.imported, subTitle: OtherCellSubTitle.imported)),
+            .rowCell(model: RowTypeCell(header: OtherCellTitle.hidden, icon: OtherCellIconImage.hidden, subTitle: OtherCellSubTitle.hidden)),
+            .rowCell(model: RowTypeCell(header: OtherCellTitle.recentlyDeleted, icon: OtherCellIconImage.recentlyDeleted, subTitle: OtherCellSubTitle.recentlyDeleted))
+        ]))
     }
 }

@@ -50,8 +50,10 @@ class GalleryViewCintroller: UIViewController {
         collectionView.dataSource = self
         
         collectionView.register(CardTypeCollectionViewCell.self, forCellWithReuseIdentifier: CardTypeCollectionViewCell.identifier)
+        collectionView.register(RowTypeCollectionViewCell.self, forCellWithReuseIdentifier: RowTypeCollectionViewCell.identifier)
         
         collectionView.register(HeaderButtonSection.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderButtonSection.identifier)
+        collectionView.register(HeaderSection.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderSection.identifier)
         
         self.view.addSubview(collectionView)
     }
@@ -60,16 +62,21 @@ class GalleryViewCintroller: UIViewController {
         return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
             switch sectionNumber {
             case 0: return self.createSectionFirstType()
-            default: return self.createSectionFirstType()
+            case 1...2: return self.createSectionSecondType()
+            case 3...4: return self.createSectionThirdType()
+            default: return self.createSectionThirdType()
             }
         }
     }
+    
+    // MARK: - Create LayoutSection for first section Type
     
     private func createSectionFirstType() -> NSCollectionLayoutSection {
         let widthHeader: CGFloat = view.frame.size.width - 20
         let heigthheader: CGFloat = 35
         let widthCell: CGFloat = (view.frame.size.width - 50) / 2
         let heigthCell: CGFloat = (view.frame.size.width - 50) + 110
+        let spacing: CGFloat = 10
         
         let headerSize = NSCollectionLayoutSize(widthDimension: .absolute(widthHeader), heightDimension: .absolute(heigthheader))
         
@@ -83,14 +90,76 @@ class GalleryViewCintroller: UIViewController {
         
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
         
-        group.interItemSpacing = .fixed(20)
+        group.interItemSpacing = .fixed(spacing)
         
         let section = NSCollectionLayoutSection(group: group)
         
         section.orthogonalScrollingBehavior = .continuous
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 0)
         section.boundarySupplementaryItems = [header]
-        section.interGroupSpacing = 10
+        section.interGroupSpacing = spacing
+        
+        return section
+    }
+    
+    // MARK: - Create LayoutSection for second section Type
+    
+    private func createSectionSecondType() -> NSCollectionLayoutSection {
+        let widthHeader: CGFloat = view.frame.size.width - 20
+        let heigthheader: CGFloat = 35
+        let widthCell: CGFloat = (view.frame.size.width - 50) / 2
+        let heigthCell: CGFloat = (view.frame.size.width - 50) / 2 + 55
+        let spacing: CGFloat = 10
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .absolute(widthHeader), heightDimension: .absolute(heigthheader))
+        
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(widthCell), heightDimension: .absolute(heigthCell))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(widthCell), heightDimension: .absolute(heigthCell))
+        
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 1)
+        
+        group.interItemSpacing = .fixed(spacing)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        section.orthogonalScrollingBehavior = .continuous
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 0)
+        section.boundarySupplementaryItems = [header]
+        section.interGroupSpacing = spacing
+        
+        return section
+    }
+    
+    // MARK: - Create LayoutSection for third section Type
+    
+    private func createSectionThirdType() -> NSCollectionLayoutSection {
+        let widthHeader: CGFloat = view.frame.size.width - 20
+        let heigthheader: CGFloat = 35
+        let widthCell: CGFloat = view.frame.size.width
+        let heigthCell: CGFloat = 50
+
+        let headerSize = NSCollectionLayoutSize(widthDimension: .absolute(widthHeader), heightDimension: .absolute(heigthheader))
+
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(widthCell), heightDimension: .absolute(heigthCell))
+
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(widthCell), heightDimension: .absolute(heigthCell))
+
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 0)
+        section.boundarySupplementaryItems = [header]
+        section.orthogonalScrollingBehavior = .none
         
         return section
     }
@@ -126,12 +195,16 @@ extension GalleryViewCintroller: UICollectionViewDataSource {
             
             return cell
             
-            // MARK: - Create cell collection row type
-            
         case .rowCell(let model):
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RowTypeCollectionViewCell.identifier, for: indexPath) as? RowTypeCollectionViewCell else {
                 fatalError()
             }
+            
+            if (model.header != TypesOfMediaCellTitle.animated) && (model.header != OtherCellTitle.recentlyDeleted) {
+                cell.createSeparator()
+            }
+            
+            cell.configure(with: model)
             
             return cell
         }
@@ -150,6 +223,8 @@ extension GalleryViewCintroller: UICollectionViewDelegateFlowLayout {
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderSection.identifier, for: indexPath) as? HeaderSection else {
                 fatalError()
             }
+            
+            header.configureHeaderSection(with: model)
             
             return header
             
